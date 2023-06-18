@@ -1,0 +1,15 @@
+
+{
+  "required": true,
+  "minVersion": "0.8",
+  "refmap": "mixins.skinfighters.refmap.json",
+  "package": "com.radimous.skinfighters.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "EntityMixin",
+    "FighterEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
