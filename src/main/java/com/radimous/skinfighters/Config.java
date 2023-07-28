@@ -35,12 +35,13 @@ public class Config {
                         "Douwsky",
                         "5uppps",
                         "CaptainPuffy",
+                        "truesymmetry",
                         "Tubbo_",
                         "KaptainWutax",
                         "jmilthedude"), entry -> true);
         SKIN_CHANCE = BUILDER
                 .comment("Chance for fighter to have skin")
-                .defineInRange("skinChance", 20, 0, 100);
+                .defineInRange("skinChance", 10, 0, 100);
         SPEC = BUILDER.build();
     }
 }

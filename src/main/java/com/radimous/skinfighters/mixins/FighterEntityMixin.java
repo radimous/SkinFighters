@@ -5,10 +5,14 @@ import iskallia.vault.entity.entity.FighterEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -18,14 +22,19 @@ import java.util.List;
 import java.util.Random;
 
 @Mixin(value = FighterEntity.class)
-public abstract class FighterEntityMixin extends EntityMixin {
-    private final Random random = new Random();
+public abstract class FighterEntityMixin extends Entity {
+    @Unique
+    private final Random skinFighters$random = new Random();
+
+    public FighterEntityMixin(EntityType<?> p_19870_, Level p_19871_) {
+        super(p_19870_, p_19871_);
+    }
 
     @Inject(method = "finalizeSpawn", at = @At(value = "RETURN", target = "Liskallia/vault/entity/entity/FighterEntity;finalizeSpawn(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/world/entity/SpawnGroupData;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/entity/SpawnGroupData;"))
     public void customName(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData spawnData, CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
         List<? extends String> names = Config.NAMES.get();
-        if (!names.isEmpty() && random.nextInt(100) < Config.SKIN_CHANCE.get()) {
-            String name = names.get(random.nextInt(0, names.size()));
+        if (!names.isEmpty() && skinFighters$random.nextInt(100) < Config.SKIN_CHANCE.get()) {
+            String name = names.get(skinFighters$random.nextInt(0, names.size()));
             this.setCustomName(new TextComponent(name));
         }
     }
