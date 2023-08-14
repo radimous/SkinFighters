@@ -1,8 +1,12 @@
 package com.radimous.skinfighters.mixins;
 
+import com.google.common.base.Strings;
 import com.radimous.skinfighters.Config;
 import iskallia.vault.entity.entity.FighterEntity;
+import iskallia.vault.init.ModEntities;
+import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.Entity;
@@ -35,7 +39,15 @@ public abstract class FighterEntityMixin extends Entity {
         List<? extends String> names = Config.NAMES.get();
         if (!names.isEmpty() && skinFighters$random.nextInt(100) < Config.SKIN_CHANCE.get()) {
             String name = names.get(skinFighters$random.nextInt(0, names.size()));
-            this.setCustomName(new TextComponent(name));
+            String star = String.valueOf('✦');
+            int count = 0;
+            if (!Config.DISABLE_STARS.get())
+                count = Math.max(ModEntities.VAULT_FIGHTER_TYPES.indexOf(this.getType()), 0);
+            MutableComponent customName = new TextComponent("")
+                .append(new TextComponent(Strings.repeat(star, count)).withStyle(ChatFormatting.GOLD))
+                .append(" ")
+                .append(new TextComponent(name));
+            this.setCustomName(customName);
         }
     }
 

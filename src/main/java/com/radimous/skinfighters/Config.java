@@ -8,6 +8,7 @@ import java.util.List;
 public class Config {
     public static ForgeConfigSpec.IntValue SKIN_CHANCE;
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> NAMES;
+    public static ForgeConfigSpec.BooleanValue DISABLE_STARS;
     public static ForgeConfigSpec SPEC;
 
     static {
@@ -42,6 +43,9 @@ public class Config {
         SKIN_CHANCE = BUILDER
                 .comment("Chance for fighter to have skin")
                 .defineInRange("skinChance", 10, 0, 100);
+        DISABLE_STARS = BUILDER
+                .comment("Disable stars in name that show fighter tier")
+                .define("disableStars", false);
         SPEC = BUILDER.build();
     }
 }
