@@ -2,6 +2,7 @@ package com.radimous.skinfighters.mixins;
 
 import com.google.common.base.Strings;
 import com.radimous.skinfighters.Config;
+import com.radimous.skinfighters.SkinFighters;
 import iskallia.vault.entity.entity.FighterEntity;
 import iskallia.vault.init.ModEntities;
 import net.minecraft.ChatFormatting;
@@ -36,7 +37,7 @@ public abstract class FighterEntityMixin extends Entity {
 
     @Inject(method = "finalizeSpawn", at = @At(value = "RETURN", target = "Liskallia/vault/entity/entity/FighterEntity;finalizeSpawn(Lnet/minecraft/world/level/ServerLevelAccessor;Lnet/minecraft/world/DifficultyInstance;Lnet/minecraft/world/entity/MobSpawnType;Lnet/minecraft/world/entity/SpawnGroupData;Lnet/minecraft/nbt/CompoundTag;)Lnet/minecraft/world/entity/SpawnGroupData;"))
     public void customName(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType reason, SpawnGroupData spawnData, CompoundTag dataTag, CallbackInfoReturnable<SpawnGroupData> cir) {
-        List<? extends String> names = Config.NAMES.get();
+        List<? extends String> names = SkinFighters.getNames();
         if (!names.isEmpty() && skinFighters$random.nextInt(100) < Config.SKIN_CHANCE.get()) {
             String name = names.get(skinFighters$random.nextInt(0, names.size()));
             String star = String.valueOf('✦');
@@ -45,7 +46,7 @@ public abstract class FighterEntityMixin extends Entity {
                 count = Math.max(ModEntities.VAULT_FIGHTER_TYPES.indexOf(this.getType()), 0);
             MutableComponent customName = new TextComponent("")
                 .append(new TextComponent(Strings.repeat(star, count)).withStyle(ChatFormatting.GOLD))
-                .append(" ")
+                .append(count > 0 ? " " : "")
                 .append(new TextComponent(name));
             this.setCustomName(customName);
         }
